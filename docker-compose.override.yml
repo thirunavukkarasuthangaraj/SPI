@@ -1,0 +1,13 @@
+services:
+  spi:
+    container_name: spi
+    # Bound to localhost only — the internet reaches this app through nginx,
+    # never directly on this port. Useful for local debugging on the host.
+    ports:
+      - "127.0.0.1:3003:3000"
+    networks:
+      - invoiceai_backend
+
+networks:
+  invoiceai_backend:
+    external: true

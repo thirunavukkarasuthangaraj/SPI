@@ -1,0 +1,9 @@
+services:
+  spi:
+    build:
+      context: .
+    env_file: .env.production
+    volumes:
+      # Persistent SQLite data — survives container rebuilds/redeploys.
+      - ./data:/app/data
+    restart: unless-stopped

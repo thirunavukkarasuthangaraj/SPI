@@ -46,3 +46,6 @@ next-env.d.ts
 /prisma/dev.db
 /prisma/*.db
 /prisma/*.db-journal
+
+# production persistent volume (server-side only)
+/data
