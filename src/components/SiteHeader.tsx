@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LanguageToggle from "@/components/LanguageToggle";
+import MobileNav from "@/components/MobileNav";
 import { t, type Lang } from "@/lib/i18n";
 
 export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: Lang }) {
@@ -12,16 +13,18 @@ export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: 
     { href: "/videos", label: t("videos", lang) },
     { href: "/donate", label: t("donate", lang) },
   ];
+  const adminLabel = isAdmin ? t("admin", lang) : t("adminLogin", lang);
 
   return (
-    <header className="border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-        <Link href="/" className="flex flex-col leading-tight">
-          <span className="text-lg font-bold text-brand-dark">{t("orgName", lang)}</span>
-          <span className="text-xs text-neutral-500">{t("tagline", lang)}</span>
+    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:py-4">
+        <Link href="/" className="flex min-w-0 flex-col leading-tight">
+          <span className="truncate text-base font-bold text-brand-dark sm:text-lg">{t("orgName", lang)}</span>
+          <span className="truncate text-xs text-neutral-500">{t("tagline", lang)}</span>
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-1 text-sm">
+        {/* Desktop nav */}
+        <nav className="hidden flex-wrap items-center gap-1 text-sm md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -35,10 +38,13 @@ export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: 
             href={isAdmin ? "/admin" : "/admin/login"}
             className="ml-1 rounded-md bg-brand px-3 py-2 font-medium text-white hover:bg-brand-dark"
           >
-            {isAdmin ? t("admin", lang) : t("adminLogin", lang)}
+            {adminLabel}
           </Link>
           <LanguageToggle lang={lang} />
         </nav>
+
+        {/* Mobile nav */}
+        <MobileNav navLinks={navLinks} isAdmin={isAdmin} adminLabel={adminLabel} lang={lang} />
       </div>
     </header>
   );
