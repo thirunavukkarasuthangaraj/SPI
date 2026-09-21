@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum PostCategory {
+  NEWS
+  BLOG
+  ACTIVITY
+}
+
+enum DonationStatus {
+  CREATED
+  PAID
+  FAILED
+}
+
+model Donation {
+  id                String         @id @default(cuid())
+  name              String
+  email             String
+  phone             String?
+  amount            Int // in rupees (INR)
+  currency          String         @default("INR")
+  status            DonationStatus @default(PAID)
+  razorpayPaymentId String         @unique
+  createdAt         DateTime       @default(now())
+
+  @@index([status, createdAt])
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+}
+
+model Post {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  category    PostCategory
+  excerpt     String?
+  content     String
+  coverImage  String?
+  published   Boolean      @default(true)
+  eventDate   DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([category, published, createdAt])
+}
