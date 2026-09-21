@@ -2,21 +2,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CATEGORY_META, formatDate, getPostBySlug, youtubeEmbedUrl } from "@/lib/posts";
 
-export default async function BlogDetailPage(props: PageProps<"/blog/[slug]">) {
+export default async function PoliticsDetailPage(props: PageProps<"/politics/[slug]">) {
   const { slug } = await props.params;
-  const post = await getPostBySlug("BLOG", slug);
+  const post = await getPostBySlug("POLITICS", slug);
   if (!post) notFound();
 
-  const meta = CATEGORY_META.BLOG;
+  const meta = CATEGORY_META.POLITICS;
   const embedUrl = post.videoUrl ? youtubeEmbedUrl(post.videoUrl) : null;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/blog" className="text-sm font-medium text-brand hover:underline">
+      <Link href="/politics" className="text-sm font-medium text-brand hover:underline">
         ← {meta.label}
       </Link>
-      <div className="mt-4 flex items-center gap-2 text-xs font-medium text-brand">
-        <span className="rounded-full bg-blue-50 px-2 py-0.5">{meta.label}</span>
+      <div className="mt-4 flex items-center gap-2 text-xs font-medium text-red-700">
+        <span className="rounded-full bg-red-50 px-2 py-0.5">{meta.label}</span>
         {post.eventDate && <span className="text-neutral-400">{formatDate(post.eventDate)}</span>}
       </div>
       <h1 className="mt-3 text-2xl font-bold text-neutral-900 sm:text-3xl">{post.title}</h1>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CATEGORY_META, formatDate, getPostBySlug } from "@/lib/posts";
+import { CATEGORY_META, formatDate, getPostBySlug, youtubeEmbedUrl } from "@/lib/posts";
 
 export default async function NewsDetailPage(props: PageProps<"/news/[slug]">) {
   const { slug } = await props.params;
@@ -8,6 +8,7 @@ export default async function NewsDetailPage(props: PageProps<"/news/[slug]">) {
   if (!post) notFound();
 
   const meta = CATEGORY_META.NEWS;
+  const embedUrl = post.videoUrl ? youtubeEmbedUrl(post.videoUrl) : null;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -19,6 +20,16 @@ export default async function NewsDetailPage(props: PageProps<"/news/[slug]">) {
         {post.eventDate && <span className="text-neutral-400">{formatDate(post.eventDate)}</span>}
       </div>
       <h1 className="mt-3 text-2xl font-bold text-neutral-900 sm:text-3xl">{post.title}</h1>
+      {embedUrl && (
+        <div className="mt-6 aspect-video overflow-hidden rounded-lg border border-neutral-200">
+          <iframe
+            src={embedUrl}
+            className="h-full w-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )}
       <div className="prose prose-neutral mt-6 max-w-none whitespace-pre-wrap text-neutral-800">
         {post.content}
       </div>

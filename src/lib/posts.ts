@@ -1,29 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { PostCategory } from "@/generated/prisma/client";
 
-export const CATEGORY_META: Record<
-  PostCategory,
-  { label: string; labelEn: string; path: string; description: string }
-> = {
-  NEWS: {
-    label: "செய்திகள்",
-    labelEn: "News",
-    path: "news",
-    description: "ஊடகங்களில் வெளியான சட்ட பஞ்சாயத்து இயக்கம் தொடர்பான செய்திகள்.",
-  },
-  BLOG: {
-    label: "கருத்தாக்கம்",
-    labelEn: "Blog",
-    path: "blog",
-    description: "இயக்கத்தின் கருத்துகள், கருத்தரங்குகள் மற்றும் விரிவான கட்டுரைகள்.",
-  },
-  ACTIVITY: {
-    label: "நாளாந்த செயல்பாடு",
-    labelEn: "Daily Activity",
-    path: "activity",
-    description: "இயக்கத்தின் நாளாந்த களப்பணிகள் மற்றும் நிகழ்வுகள்.",
-  },
-};
+export { CATEGORY_META, CATEGORY_COLOR_CLASSES, youtubeEmbedUrl, slugify, formatDate } from "@/lib/postMeta";
 
 export async function getPublishedPosts(category: PostCategory) {
   return prisma.post.findMany({
@@ -35,6 +13,25 @@ export async function getPublishedPosts(category: PostCategory) {
 export async function getLatestPosts(limit = 6) {
   return prisma.post.findMany({
     where: { published: true },
+    orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }],
+    take: limit,
+  });
+}
+
+export async function getFeaturedPosts(limit = 5) {
+  const featured = await prisma.post.findMany({
+    where: { published: true, featured: true },
+    orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }],
+    take: limit,
+  });
+  if (featured.length > 0) return featured;
+  // Fall back to latest posts so the slider is never empty.
+  return getLatestPosts(limit);
+}
+
+export async function getVideoPosts(limit = 12) {
+  return prisma.post.findMany({
+    where: { published: true, videoUrl: { not: null } },
     orderBy: [{ eventDate: "desc" }, { createdAt: "desc" }],
     take: limit,
   });
@@ -54,22 +51,4 @@ export async function getAllPostsForAdmin() {
 
 export async function getPostById(id: string) {
   return prisma.post.findUnique({ where: { id } });
-}
-
-export function slugify(title: string) {
-  const base = title
-    .trim()
-    .toLowerCase()
-    .replace(/['"]/g, "")
-    .replace(/[^\p{L}\p{N}]+/gu, "-")
-    .replace(/^-+|-+$/g, "");
-  return base || `post-${Date.now()}`;
-}
-
-export function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("ta-IN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(date);
 }

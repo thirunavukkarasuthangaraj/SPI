@@ -7,6 +7,7 @@ import type { ActionState } from "@/app/actions";
 
 const CATEGORIES = [
   { value: "NEWS", label: "செய்திகள்" },
+  { value: "POLITICS", label: "அரசியல் செய்திகள்" },
   { value: "BLOG", label: "கருத்தாக்கம்" },
   { value: "ACTIVITY", label: "நாளாந்த செயல்பாடு" },
 ] as const;
@@ -108,15 +109,39 @@ export default function PostForm({
         </p>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-neutral-700">
+      <div>
+        <label className="block text-sm font-medium text-neutral-700">
+          YouTube வீடியோ URL <span className="text-neutral-400">(விருப்பம்)</span>
+        </label>
         <input
-          type="checkbox"
-          name="published"
-          defaultChecked={post?.published ?? true}
-          className="h-4 w-4 rounded border-neutral-300"
+          type="url"
+          name="videoUrl"
+          defaultValue={post?.videoUrl ?? ""}
+          placeholder="https://youtu.be/..."
+          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-brand focus:outline-none"
         />
-        உடனடியாக வெளியிடவும்
-      </label>
+      </div>
+
+      <div className="flex flex-wrap gap-6">
+        <label className="flex items-center gap-2 text-sm text-neutral-700">
+          <input
+            type="checkbox"
+            name="published"
+            defaultChecked={post?.published ?? true}
+            className="h-4 w-4 rounded border-neutral-300"
+          />
+          உடனடியாக வெளியிடவும்
+        </label>
+        <label className="flex items-center gap-2 text-sm text-neutral-700">
+          <input
+            type="checkbox"
+            name="featured"
+            defaultChecked={post?.featured ?? false}
+            className="h-4 w-4 rounded border-neutral-300"
+          />
+          முகப்பு பேனர் ஸ்லைடரில் காட்டு (Featured)
+        </label>
+      </div>
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
 

@@ -6,8 +6,10 @@ export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: 
   const navLinks: { href: string; label: string }[] = [
     { href: "/", label: t("home", lang) },
     { href: "/news", label: t("news", lang) },
+    { href: "/politics", label: t("politics", lang) },
     { href: "/blog", label: t("blog", lang) },
     { href: "/activity", label: t("activity", lang) },
+    { href: "/videos", label: t("videos", lang) },
     { href: "/donate", label: t("donate", lang) },
   ];
 

@@ -13,6 +13,7 @@ datasource db {
 
 enum PostCategory {
   NEWS
+  POLITICS
   BLOG
   ACTIVITY
 }
@@ -53,6 +54,8 @@ model Post {
   excerpt     String?
   content     String
   coverImage  String?
+  videoUrl    String?
+  featured    Boolean      @default(false)
   published   Boolean      @default(true)
   eventDate   DateTime?
   createdAt   DateTime     @default(now())

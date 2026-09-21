@@ -62,15 +62,18 @@ function readPostFields(formData: FormData) {
   const content = String(formData.get("content") ?? "").trim();
   const eventDateRaw = String(formData.get("eventDate") ?? "").trim();
   const published = formData.get("published") === "on";
+  const featured = formData.get("featured") === "on";
+  const videoUrl = String(formData.get("videoUrl") ?? "").trim();
   const slugInput = String(formData.get("slug") ?? "").trim();
 
-  return { title, category, excerpt, content, eventDateRaw, published, slugInput };
+  return { title, category, excerpt, content, eventDateRaw, published, featured, videoUrl, slugInput };
 }
 
 export async function createPostAction(_prevState: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
 
-  const { title, category, excerpt, content, eventDateRaw, published, slugInput } = readPostFields(formData);
+  const { title, category, excerpt, content, eventDateRaw, published, featured, videoUrl, slugInput } =
+    readPostFields(formData);
 
   if (!title || !content) {
     return { error: "தலைப்பு மற்றும் உள்ளடக்கம் அவசியம்." };
@@ -93,6 +96,8 @@ export async function createPostAction(_prevState: ActionState, formData: FormDa
       content,
       eventDate: eventDateRaw ? new Date(eventDateRaw) : new Date(),
       published,
+      featured,
+      videoUrl: videoUrl || null,
     },
   });
 
@@ -100,6 +105,8 @@ export async function createPostAction(_prevState: ActionState, formData: FormDa
   revalidatePath("/news");
   revalidatePath("/blog");
   revalidatePath("/activity");
+  revalidatePath("/politics");
+  revalidatePath("/videos");
   redirect("/admin");
 }
 
@@ -107,7 +114,8 @@ export async function updatePostAction(_prevState: ActionState, formData: FormDa
   await requireAdmin();
 
   const id = String(formData.get("id") ?? "");
-  const { title, category, excerpt, content, eventDateRaw, published } = readPostFields(formData);
+  const { title, category, excerpt, content, eventDateRaw, published, featured, videoUrl } =
+    readPostFields(formData);
 
   if (!id || !title || !content) {
     return { error: "தலைப்பு மற்றும் உள்ளடக்கம் அவசியம்." };
@@ -122,6 +130,8 @@ export async function updatePostAction(_prevState: ActionState, formData: FormDa
       content,
       eventDate: eventDateRaw ? new Date(eventDateRaw) : new Date(),
       published,
+      featured,
+      videoUrl: videoUrl || null,
     },
   });
 
@@ -129,6 +139,8 @@ export async function updatePostAction(_prevState: ActionState, formData: FormDa
   revalidatePath("/news");
   revalidatePath("/blog");
   revalidatePath("/activity");
+  revalidatePath("/politics");
+  revalidatePath("/videos");
   redirect("/admin");
 }
 
@@ -168,6 +180,8 @@ export async function deletePostAction(formData: FormData) {
     revalidatePath("/news");
     revalidatePath("/blog");
     revalidatePath("/activity");
+    revalidatePath("/politics");
+    revalidatePath("/videos");
   }
   redirect("/admin");
 }
