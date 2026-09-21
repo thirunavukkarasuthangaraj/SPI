@@ -1,6 +1,7 @@
 import Link from "next/link";
 import LanguageToggle from "@/components/LanguageToggle";
 import MobileNav from "@/components/MobileNav";
+import Logo from "@/components/Logo";
 import { t, type Lang } from "@/lib/i18n";
 
 export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: Lang }) {
@@ -18,9 +19,12 @@ export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:py-4">
-        <Link href="/" className="flex min-w-0 flex-col leading-tight">
-          <span className="truncate text-base font-bold text-brand-dark sm:text-lg">{t("orgName", lang)}</span>
-          <span className="truncate text-xs text-neutral-500">{t("tagline", lang)}</span>
+        <Link href="/" className="flex min-w-0 items-center gap-2">
+          <Logo className="h-9 w-9 shrink-0 sm:h-10 sm:w-10" />
+          <span className="flex min-w-0 flex-col leading-tight">
+            <span className="truncate text-base font-bold text-brand-dark sm:text-lg">{t("orgName", lang)}</span>
+            <span className="truncate text-xs font-medium text-accent">{t("tagline", lang)}</span>
+          </span>
         </Link>
 
         {/* Desktop nav — only shown once there's enough width for Tamil labels to fit on one line */}
