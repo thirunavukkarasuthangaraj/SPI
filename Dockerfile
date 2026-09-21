@@ -4,6 +4,9 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++ openssl
 COPY package*.json ./
 COPY prisma ./prisma
+# Dummy value — prisma generate/build only need the schema, not a live DB,
+# but prisma.config.ts requires DATABASE_URL to be set to load at all.
+ENV DATABASE_URL="file:/tmp/build.db"
 RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npx prisma generate
