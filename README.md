@@ -32,6 +32,10 @@ Visit `http://localhost:3000`. Admin login: `http://localhost:3000/admin/login`.
 
 `.env` is git-ignored — never commit real secrets.
 
+## Domain
+
+Site metadata is set for **thirutech.online**. To actually serve the site there, deploy (e.g. to Vercel) and add `thirutech.online` as a custom domain in that host's dashboard, then point the domain's DNS records to the host as instructed there.
+
 ## Production notes
 
 - Swap SQLite for a hosted Postgres database (e.g. Neon, Supabase, Railway) by changing `datasource db { provider = "postgresql" }` in `prisma/schema.prisma` and updating `DATABASE_URL`.

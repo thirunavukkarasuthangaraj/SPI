@@ -18,6 +18,7 @@ const notoTamil = Noto_Sans_Tamil({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://thirutech.online"),
   title: "சட்ட பஞ்சாயத்து இயக்கம் | Satta Panchayat Iyakkam",
   description:
     "சட்டத்தின் ஆட்சி நோக்கில் இயங்கும் சட்ட பஞ்சாயத்து இயக்கத்தின் செய்திகள், கட்டுரைகள் மற்றும் நாளாந்த செயல்பாடுகள்.",
