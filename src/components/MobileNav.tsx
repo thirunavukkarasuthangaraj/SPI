@@ -19,7 +19,7 @@ export default function MobileNav({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         aria-label="Menu"
@@ -39,7 +39,7 @@ export default function MobileNav({
       </button>
 
       {open && (
-        <div className="fixed inset-x-0 top-[73px] z-40 max-h-[calc(100vh-73px)] overflow-y-auto border-t border-neutral-200 bg-white px-4 py-3 shadow-lg">
+        <div className="absolute inset-x-0 top-full z-40 max-h-[80vh] overflow-y-auto border-t border-neutral-200 bg-white px-4 py-3 shadow-lg">
           <nav className="flex flex-col gap-1 text-sm">
             {navLinks.map((link) => (
               <Link

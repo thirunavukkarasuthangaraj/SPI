@@ -23,8 +23,8 @@ export default function SiteHeader({ isAdmin, lang }: { isAdmin: boolean; lang: 
           <span className="truncate text-xs text-neutral-500">{t("tagline", lang)}</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden flex-wrap items-center gap-1 text-sm md:flex">
+        {/* Desktop nav — only shown once there's enough width for Tamil labels to fit on one line */}
+        <nav className="hidden flex-nowrap items-center gap-1 whitespace-nowrap text-sm xl:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
