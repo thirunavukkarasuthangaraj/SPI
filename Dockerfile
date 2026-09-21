@@ -3,6 +3,7 @@ WORKDIR /app
 # Prisma's query engine is a native binary — needs build tools on Alpine
 RUN apk add --no-cache python3 make g++ openssl
 COPY package*.json ./
+COPY prisma ./prisma
 RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npx prisma generate
